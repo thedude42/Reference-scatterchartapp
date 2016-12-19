@@ -1,0 +1,20 @@
+{
+  "name": "scatterchartapp",
+  "version": "0.0.1",
+  "description": "app to render data in a line graph",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"not implemented\"",
+    "start": "node app.js"
+  },
+  "keywords": [
+    "chart.js",
+    "jquery"
+  ],
+  "author": "sk8rdie42@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "basic-auth": "^1.1.0",
+    "express": "^4.14.0"
+  }
+}

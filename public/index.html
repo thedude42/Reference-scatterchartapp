@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Trying to make a chart</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="Chart.js"></script>
+<script src="jquery.min.js"></script>
+<script>
+
+function makeChart(ctx, rqstdata) {
+    var data = {
+        datasets: [{
+            label: 'Scatter Dataset',
+            data: [{x:0,y:0}, {x: 1,y: 10}, {x: 4,y: 5}]
+        }, {
+            label: '#2',
+            data: [{x:0,y:2}, {x: 2,y: 8}, {x: 4,y: 9}]
+        }]
+    };
+    var options = {
+        scales: {
+            xAxes: [{
+                type: 'linear',
+                position: 'bottom'
+            }]
+        }
+    }
+    var linechart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: options
+    });
+}
+$( document ).ready(()=>{
+    console.log("ready!");
+    var end = new Date(Date.now()),
+        start = new Date('1970-01-01T00:00:01');
+    $.post("/app/fetchData", { start: start, end: end } ).
+        done((respData)=>{
+            console.log(respData)
+            makeChart($("#myChart")[0], respData);
+        });
+});
+$( "#rangeForm" ).submit(( event )=>{
+    // Stop form from submitting normally
+    event.preventDefault();
+    // Get some values from elements on the page:
+    var $form = $( this ),
+        beginTime = $form.find( "input[name='start']" ).val(),
+        endTime = $form.find( "input[name='end']" ).val(),
+        url = $form.attr( "action" );
+
+    console.log(beginTime, endTime);
+    // Send the data using post
+    var posting = $.post( url, { start: beginTime, end: endTime } );
+
+    // Put the results in a div
+    posting.done(( data )=>{
+        //var ctx = document.getElementById("myChart");
+        makeChart($("#myChart")[0], data);
+    });
+});
+</script>
+</head>
+<body>
+    <div is="formDiv">
+        <form id="rangeForm" action="/app/fetchData">
+          <input type="datetime-local" name="start" placeholder="Begin Time">
+          <input type="datetime-local" name="end" placeholder="End Time">
+          <input type="submit" value="Query">
+        </form>
+    </div>
+    <div class="container">
+        <canvas id="myChart" ></canvas>
+    </div>
+
+</body>
+</html>
