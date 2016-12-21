@@ -18,8 +18,8 @@ function fetchdata(req, res) {
     });
     req.on('end', function fetchdataPostHandler() {
         var dataarr = [];
-        for (let i =0; i < 7; ++i) {
-            dataarr.push(Math.floor(Math.random()*10));
+        for (let i =0; i < 1000; ++i) {
+            dataarr.push({x:i, y:(Math.random()*10)/1.7+1});
         }
         var query = Qs.parse(reqbody)
         console.log("POST data:", query);
